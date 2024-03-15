@@ -23,6 +23,7 @@ app.post("/todo",async function(req,res){
  await todo.create({
     title:createPayload.title,
     description:createPayload.description,
+    completd:false
  })
 
  res.json({
@@ -30,12 +31,16 @@ app.post("/todo",async function(req,res){
  })
 })
 
-app.get("/todos",function(req,res){
+app.get("/todos",async function(req,res){
+    const todos=await todo.find({});
 
+    res.json({
+        todos
+    })
 
 })
 
-app.put("/completed",function(req,res){
+app.put("/completed",async function(req,res){
     const updatePayload=req.body;
     const parsedPayload=updateTodo.safeParse(updatePayload);
     if(!parsedPayload.success){
@@ -43,8 +48,15 @@ app.put("/completed",function(req,res){
             msg:"you sent the wrong input",
         })
         return;
-    }+
-
+    }
+    await todo.update({
+        _id:req.body.id
+    },{
+        completd:true
+    })
+    res.json({
+        msg:"Todo marked as completed"
+    })
 })
 
 app.listen(port,()=>{
