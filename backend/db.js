@@ -10,10 +10,13 @@ const mongoose=require("mongoose");
 //mongodb+srv://raj2020:hfMO3Jmf8Kgiayft@cluster0.yhlsrrr.mongodb.net/todos
 
 mongoose.connect("mongodb+srv://raj2020:hfMO3Jmf8Kgiayft@cluster0.yhlsrrr.mongodb.net/todos")
-const todoschema= mongoose.schema({
+const todoschema= mongoose.Schema({
     title:String,
     description:String,
-    completed:Boolean
+    completed:{
+        type:Boolean,
+        default:false
+    }
 })
 
 const todo= mongoose.model('todos',todoschema);
